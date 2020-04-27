@@ -7,7 +7,7 @@
         "dev_id" : 0,
         "prg_id" : 0,
         "version" : "0.1-0",
-        "name" : "pict",
+        "name" : "pacm",
         "num_param" : 6,
         "params" : [
             ["dummy0",    0, 1, ""],
