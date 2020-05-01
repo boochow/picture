@@ -8,8 +8,10 @@
         "prg_id" : 0,
         "version" : "1.0-0",
         "name" : "pacm",
-        "num_param" : 1,
+        "num_param" : 3,
         "params" : [
+            ["type",    0, 3, ""],
+            ["phase",    0, 3, ""],
             ["interpolation",    0, 2, ""]
           ]
     }

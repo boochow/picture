@@ -26,8 +26,10 @@ typedef struct State {
     float phase;
     float lfo, lfoz;
     float shape;
+    float shape_start;
     uint8_t table;
     uint8_t interpolation;
+    uint8_t shape_type;
     uint8_t flags;
 } State;
 
@@ -40,6 +42,13 @@ enum {
 };
 
 enum {
+    k_shape_flat = 0,
+    k_shape_square,
+    k_shape_triangle,
+    k_shape_sine
+};
+
+enum {
     k_flags_none = 0,
     k_flag_reset = 1<<0,
 };
@@ -47,11 +56,11 @@ enum {
 static void init_wavetable(q31_t *table, const int vertices, float *vx,  float *vy) {
     q31_t x, y;
     for(int i = 0; i < vertices; i++) {
-        x = f32_to_q31(vx[i] / 2);
-        y = f32_to_q31(vy[i] / 2 + 0.5);
+        x = f32_to_q31(vx[i] - 1.0);
+        y = f32_to_q31(vy[i]);
         table[i]                = y;
-        table[i + vertices]     = 0x7fffffff - x;
-        table[i + 2 * vertices] = 0x7fffffff - y;
+        table[i + vertices]     = 0xffffffff - x;
+        table[i + 2 * vertices] = 0xffffffff - y;
         table[i + 3 * vertices] = x;
     }
 }
@@ -61,7 +70,9 @@ void OSC_INIT(uint32_t platform, uint32_t api)
     s_state.w0    = 0.f;
     s_state.phase = 0.f;
     s_state.lfo = s_state.lfoz = 0.f;
+    s_state.shape_start = 0.f;
     s_state.interpolation = k_inter_lin;
+    s_state.shape_type = k_shape_flat;
     s_state.flags = k_flags_none;
     for (int i = 0; i < WAVETABLES; i++) {
         init_wavetable(wavetable[i], VERTICES, figure_x[i], figure_y[i]);
@@ -75,9 +86,10 @@ void OSC_CYCLE(const user_osc_param_t * const params,
     const uint8_t flags = s_state.flags;
     s_state.flags = k_flags_none;
 
+    const float note = (params->pitch >> 8) + (params->pitch & 0xFF)/256.0f;
     const float w0 = s_state.w0 = osc_w0f_for_note((params->pitch)>>8, params->pitch & 0xFF);
     float phase = (flags & k_flag_reset) ? 0.f : s_state.phase;
-  
+
     const float lfo = s_state.lfo = q31_to_f32(params->shape_lfo);
     float lfoz = (flags & k_flag_reset) ? lfo : s_state.lfoz;
     const float lfo_inc = (lfo - lfoz) / frames;
@@ -105,10 +117,28 @@ void OSC_CYCLE(const user_osc_param_t * const params,
             sig = linintf(frac, m, n);
         }
 
-        float pwm = phase + 0.75;
+        float pwm = phase + s_state.shape_start;
         pwm -= (uint32_t) pwm;
         if (pwm < (s_state.shape + lfoz)) {
-            sig = 0.5f;
+            switch(s_state.shape_type) {
+            case k_shape_square:
+                sig = osc_bl2_sqrf(phase, osc_bl_sqr_idx(note));
+                break;
+            case k_shape_triangle:
+                if (pwm < 0.25) {
+                    sig = pwm * 4;
+                } else if (pwm < 0.75) {
+                    sig = -pwm * 4 + 2;
+                } else {
+                    sig = pwm * 4 - 4;
+                }
+                break;
+            case k_shape_sine:
+                sig = osc_sinf(phase);
+                break;
+            default:
+                sig = 0.f;
+            }
         }
 
         *(y++) = f32_to_q31(sig);
@@ -133,11 +163,15 @@ void OSC_PARAM(uint16_t index, uint16_t value)
 {
     const float valf = param_val_to_f32(value);
     switch (index) {
-    case k_user_osc_param_id1:
+    case k_user_osc_param_id1: /* shape type: flat, sqr, tri, sin */
+        s_state.shape_type = value;
+        break;
+    case k_user_osc_param_id2: /* shape phase of start: 3pi/4, 0, pi/4, pi/2 */
+        s_state.shape_start = 0.25 * (++value % 4);
+        break;
+    case k_user_osc_param_id3: /* interpolation method: linear, cos, none */
         s_state.interpolation = value;
         break;
-    case k_user_osc_param_id2:
-    case k_user_osc_param_id3:
     case k_user_osc_param_id4:
     case k_user_osc_param_id5:
     case k_user_osc_param_id6:
