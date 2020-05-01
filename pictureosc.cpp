@@ -1,5 +1,5 @@
 /*
- * File: lissaosc.cpp
+ * File: pictureosc.cpp
  */
 
 #include "userosc.h"

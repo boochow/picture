@@ -2,11 +2,11 @@
 # Project Customization
 # #############################################################################
 
-PROJECT = star
+PROJECT = picture
 
 UCSRC =
 
-UCXXSRC = lissaosc.cpp
+UCXXSRC = pictureosc.cpp
 
 UINCDIR =
 
