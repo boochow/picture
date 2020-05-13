@@ -25,8 +25,6 @@ Then Lissa delay aligns them to the same phase by delaying the signal for a quar
 
 ![top-page](https://raw.githubusercontent.com/boochow/picture/images/fig2.png)
 
-When the amplitude of the X signal and Y signal are the same value, the first quarter of the signal and delayed signal draw a square picture. 
-
 The first quarter of the Y signal is copied to the X signal of the second quarter. 
 The Y signal of the second quarter (which is also the X signal of the third quarter) could be -X of the first quarter to draw the same picture of the first quarter with 90 degrees rotation.
 
@@ -36,9 +34,9 @@ The result would be four same pictures rotated by 90 degrees.
 
 ## Synchronizing the tone pitch and the delay time
 
-While playing music with the sound of Picture OSC is possible, there is an issue for drawing pictures while playing music.
+Althogh playing music with the sound of Picture OSC is possible, there is an issue for drawing pictures while playing music.
 
-While the delay time must always be a quarter of the wavelength precisely, there is no way for the delay module to get the current pitch value of the oscillator module.
+To draw a stable figure, the delay time must always be a quarter of the wavelength precisely. However, there is no way for the delay module to get the current pitch value of the oscillator module.
 
 To solve this, I used a MIDI signal processor plugin software on PC, which converts MIDI note number to MIDI control change for delay time (CC#30).
 The MIDI filter I used is midiNotesToCC in [Piz MIDI Plugins](https://www.kvraudio.com/forum/viewtopic.php?t=300566).
