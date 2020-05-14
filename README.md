@@ -1,7 +1,7 @@
 # Picture oscillator
 
 ## About
-Picture is an oscillator module that can draw pictures on an XY-mode oscilloscope using [lissa delay](https://github.com/boochow/lissa). It is a kind of wavetable synthesizer and a picture to be drawn is encoded in a wavetable.
+Picture is an oscillator module that can draw pictures on an XY-mode oscilloscope using [lissa delay](https://github.com/boochow/lissa). It is a kind of wavetable synthesizer and the picture to be drawn is encoded in a wavetable.
 
 Editing `figure.h` enables you to make your own oscillator which shows your own pictures on an oscilloscope. 
 Since the module can hold multipe waveforms, it is possible to include a set of pictures in a single oscillator module.
@@ -13,7 +13,7 @@ Picture works on any logue-sdk compatible hardware.
 
 ## Drawing pictures
 
-It is known that the pair of synchronized two waveforms can draw a picture on an XY-mode oscilloscope screen. However, the logue-sdk oscillator is single-channel and is not able to generate two waveforms at once. 
+It is known that the pair of two synchronized waveforms can draw a picture on an XY-mode oscilloscope screen. However, the logue-sdk oscillator is single-channel and is not able to generate two waveforms at once. 
 
 I use Lissa delay, a 90 degrees delay, to generate two signals from a single signal.
 
@@ -34,9 +34,9 @@ The result would be four same pictures rotated by 90 degrees.
 
 ## Synchronizing the tone pitch and the delay time
 
-Althogh playing music with the sound of Picture OSC is possible, there is an issue for drawing pictures while playing music.
+Although playing music with the sound of Picture OSC is possible, there is an issue for drawing pictures while playing music.
 
-To draw a stable figure, the delay time must always be a quarter of the wavelength precisely. However, there is no way for the delay module to get the current pitch value of the oscillator module.
+To draw a stable figure, the delay time must always be precisely a quarter of the wavelength. However, there is no way for the delay module to get the current pitch value of the oscillator module.
 
 To solve this, I used a MIDI signal processor plugin software on PC, which converts MIDI note number to MIDI control change for delay time (CC#30).
 The MIDI filter I used is midiNotesToCC in [Piz MIDI Plugins](https://www.kvraudio.com/forum/viewtopic.php?t=300566).
