@@ -1,13 +1,13 @@
 # Picture oscillator
 
 ## About
-Picture is an oscillator module that draws pictures on an XY-mode oscilloscope using [lissa delay](https://github.com/boochow/lissa).
+Picture is an oscillator module that can draw pictures on an XY-mode oscilloscope using [lissa delay](https://github.com/boochow/lissa). It is a kind of wavetable synthesizer and a picture to be drawn is encoded in a wavetable.
 
-Multiple pictures can be included in a single module. You can select one with the Shift-shape knob.
+Editing `figure.h` enables you to make your own oscillator which shows your own pictures on an oscilloscope. 
+Since the module can hold multipe waveforms, it is possible to include a set of pictures in a single oscillator module.
 
+You can select waveform with the Shift-shape knob.
 The shape knob squashes the picture. It affects the sound in a way similar to PWM.
-
-Edit `figure.h` to show your own picture on an oscilloscope. It's easy!
 
 Picture works on any logue-sdk compatible hardware.
 
@@ -41,4 +41,11 @@ To draw a stable figure, the delay time must always be a quarter of the waveleng
 To solve this, I used a MIDI signal processor plugin software on PC, which converts MIDI note number to MIDI control change for delay time (CC#30).
 The MIDI filter I used is midiNotesToCC in [Piz MIDI Plugins](https://www.kvraudio.com/forum/viewtopic.php?t=300566).
 ![top-page](https://raw.githubusercontent.com/boochow/picture/images/fig4.png)
+
+## Defining your own picture
+
+The actual wavetable is stored in the file `figure.h`. There are two arrays of float, `figure_x` and `figure_y`. They hold x-coordinates and y-coordinates of  vertices of a polygon which is drawn on the screen.
+
+The coordinates must be between 0.0 and 1.0. If you want to draw a closed polygon, you have to place the same coordinates at the beginning of the array and the end of the array.
+
 
