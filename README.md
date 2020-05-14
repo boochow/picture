@@ -44,8 +44,8 @@ The MIDI filter I used is midiNotesToCC in [Piz MIDI Plugins](https://www.kvraud
 
 ## Defining your own picture
 
-The actual wavetable is stored in the file `figure.h`. There are two arrays of float, `figure_x` and `figure_y`. They hold x-coordinates and y-coordinates of  vertices of a polygon which is drawn on the screen.
+The actual wavetable is stored in the file `figure.h`. There are two arrays of float, `figure_x`, and `figure_y`. They hold x-coordinates and y-coordinates of  vertices of a polygon that is drawn on the screen.
 
-The coordinates must be between 0.0 and 1.0. If you want to draw a closed polygon, you have to place the same coordinates at the beginning of the array and the end of the array.
+The coordinates must be between 0.0 and 1.0. If you want to draw a closed polygon, you have to place the same coordinates at the beginning of the array and the end of the arrays.
 
 
