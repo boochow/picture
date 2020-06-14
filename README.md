@@ -2,6 +2,8 @@
 
 You can download binaries from [release page](https://github.com/boochow/picture/releases).
 
+[![top-page](https://raw.githubusercontent.com/boochow/picture/images/picture_osc.gif)](https://www.youtube.com/watch?v=RcrHFz_dZ6o)
+
 ## About
 Picture is an oscillator module that can draw pictures on an XY-mode oscilloscope using [lissa delay](https://github.com/boochow/lissa). It is a kind of wavetable synthesizer and the picture to be drawn is encoded in a wavetable.
 
