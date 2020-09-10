@@ -52,4 +52,6 @@ The actual wavetable is stored in the file `figure.h`. There are two arrays of f
 
 The coordinates must be between 0.0 and 1.0. If you want to draw a closed polygon, you have to place the same coordinates at the beginning of the array and the end of the arrays.
 
+## Others
 
+My other user oscillators / modules are [here](https://blog.boochow.com/logue).
